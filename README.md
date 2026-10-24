@@ -12,17 +12,7 @@ npm i github:mahdidevroom/ansi
 
 ### Troubleshooting
 
-#### npm 12+: Git dependencies are blocked by default
-
-npm 12 disables fetching Git dependencies by default for security reasons. If you see this error:
-
-```
-npm error code EALLOWGIT
-npm error Fetching packages of type "git" have been disabled
-```
-
-Install with the `--allow-git=all` flag:
-
+#### npm 12.x: 
 ```bash
 npm install github:mahdidevroom/ansi --allow-git=all
 ```
@@ -34,22 +24,10 @@ npm config set allow-git=all
 npm i github:mahdidevroom/ansi
 ```
 
-#### npm 11.x: `EALLOWSCRIPTS` error
-
-On npm 11.x, if you have `allow-scripts` configured in your user-level `.npmrc`, installing a Git dependency may fail with:
-
-```
-npm error code EALLOWSCRIPTS
-npm error --allow-scripts is not allowed in project-scoped installs.
-```
-
-This is a known npm bug where user-level `allow-scripts` settings leak into the inner install process. Work around it by ignoring the user config:
-
+#### npm 11.x: 
 ```bash
 npm install github:mahdidevroom/ansi --userconfig=/dev/null
 ```
-
-Alternatively, temporarily remove the `allow-scripts` line from `~/.npmrc`, install, then restore it.
 
 ## Quick start
 
