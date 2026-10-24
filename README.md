@@ -1,16 +1,77 @@
 # ansi
-ANSI escape codes for terminal styling
-lightweight, typed, and dependency-free.
+
+ANSI escape codes for terminal styling — lightweight, typed, and dependency-free.
 
 ## Installation
+
 Install directly from GitHub:
 
 ```bash
 npm i github:mahdidevroom/ansi
 ```
 
-> Requires Node.js 24+ (ESM) <br>
- The package is ESM-only (`"type": "module"`)
+> Requires Node.js 24+ (ESM). The package is ESM-only (`"type": "module"`).
+
+### Troubleshooting
+
+#### npm 12+: Git dependencies are blocked by default
+
+npm 12 disables fetching Git dependencies by default for security reasons. If you see this error:
+
+```
+npm error code EALLOWGIT
+npm error Fetching packages of type "git" have been disabled
+```
+
+Install with the `--allow-git=all` flag:
+
+```bash
+npm install github:mahdidevroom/ansi --allow-git=all
+```
+
+Or make it permanent. You can either add it to your project's `.npmrc`:
+
+```ini
+allow-git=all
+```
+
+Or store it in your user-level config with `npm config`:
+
+```bash
+npm config set allow-git=all
+```
+
+To verify:
+
+```bash
+npm config get allow-git
+# all
+```
+
+To remove it later:
+
+```bash
+npm config delete allow-git
+```
+
+> `npm config set` writes to your user-level `.npmrc` (`~/.npmrc`) and applies to all projects. A project-level `.npmrc` only affects the current project.
+
+#### npm 11.x: `EALLOWSCRIPTS` error
+
+On npm 11.x, if you have `allow-scripts` configured in your user-level `.npmrc`, installing a Git dependency may fail with:
+
+```
+npm error code EALLOWSCRIPTS
+npm error --allow-scripts is not allowed in project-scoped installs.
+```
+
+This is a known npm bug where user-level `allow-scripts` settings leak into the inner install process. Work around it by ignoring the user config:
+
+```bash
+npm install github:mahdidevroom/ansi --userconfig=/dev/null
+```
+
+Alternatively, temporarily remove the `allow-scripts` line from `~/.npmrc`, install, then restore it.
 
 ## Quick start
 
@@ -38,8 +99,8 @@ The package exports a single frozen object, `ANSI`. Every property is `readonly`
 
 ## Effects (`ef`)
 
-| Key | Sequence  | Description                                |
-|-----|-----------|--------------------------------------------|
+| Key             | Sequence  | Description                    |
+|-----------------|-----------|--------------------------------|
 | `bold`          | `\x1b[1m` | Bold / increased intensity     |
 | `dim`           | `\x1b[2m` | Dim / decreased intensity      |
 | `italic`        | `\x1b[3m` | Italic                         |
@@ -78,10 +139,10 @@ Both `fg` and `bg` expose the same 16 named keys, plus `rgb` and `code` helpers.
 
 ### 24-bit and 256-color helpers
 
-| Helper | Parameters                                   | return   |
-|--------|----------------------------------------------|----------|
-| `rgb`  | `r: number` <br> `g: number` <br> `b: number`| `string` |
-| `code` | `c: number`                                  | `string` |
+| Helper | Parameters                                     | Return   |
+|--------|------------------------------------------------|----------|
+| `rgb`  | `r: number` <br> `g: number` <br> `b: number`  | `string` |
+| `code` | `c: number`                                    | `string` |
 
 ```ts
 console.log(`${ANSI.fg.rgb(255, 128, 0)} Orange ${ANSI.reset}`);
@@ -100,7 +161,6 @@ console.log(`${ANSI.fg.code(4)} Blue ${ANSI.reset}`);
 | `home`                  | ---                          | `string` | Move cursor to top-left (`\x1b[H`)                   |
 | `saveCursorPosition`    | ---                          | `string` | Save cursor position (`\x1b[s`)                      |
 | `restoreCursorPosition` | ---                          | `string` | Restore saved position (`\x1b[u`)                    |
-
 
 ```ts
 process.stdout.write(ANSI.cursorTo(1, 1) + ANSI.clearScreen);
@@ -130,8 +190,6 @@ process.stdout.write(ANSI.cursorTo(1, 1) + ANSI.clearScreen);
 
 > **Note:** `clear` uses the RIS sequence (`\x1Bc`). On most modern terminals it clears the screen, but behavior differs across terminals (some preserve scrollback). For a predictable “clear screen”, use `clearScreen` together with `home`.
 
----
-
 ## Utilities
 
 | Key      | Parameters     | Return    | Description                                   |
@@ -151,8 +209,6 @@ ANSI.isAnsi('Hello');  // false
 ```
 
 > `strip` and `length` expect a `string`. Passing other types is a TypeScript error and will throw at runtime in plain JavaScript.
-
----
 
 ## TypeScript
 
@@ -174,8 +230,6 @@ import { ANSI } from 'ansi';
 type Ansi = typeof ANSI;
 ```
 
----
-
 ## Example: a tiny color helper
 
 ```ts
@@ -187,8 +241,6 @@ const red = (s: string) => ANSI.fg.red + s + ANSI.reset;
 console.log(green('OK'));
 console.log(red('FAIL'));
 ```
-
----
 
 ## License
 
