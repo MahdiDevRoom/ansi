@@ -10,8 +10,6 @@ Install directly from GitHub:
 npm i github:mahdidevroom/ansi
 ```
 
-> Requires Node.js 24+ (ESM). The package is ESM-only (`"type": "module"`).
-
 ### Troubleshooting
 
 #### npm 12+: Git dependencies are blocked by default
@@ -29,32 +27,12 @@ Install with the `--allow-git=all` flag:
 npm install github:mahdidevroom/ansi --allow-git=all
 ```
 
-Or make it permanent. You can either add it to your project's `.npmrc`:
-
-```ini
-allow-git=all
-```
-
-Or store it in your user-level config with `npm config`:
+Or 
 
 ```bash
 npm config set allow-git=all
+npm i github:mahdidevroom/ansi
 ```
-
-To verify:
-
-```bash
-npm config get allow-git
-# all
-```
-
-To remove it later:
-
-```bash
-npm config delete allow-git
-```
-
-> `npm config set` writes to your user-level `.npmrc` (`~/.npmrc`) and applies to all projects. A project-level `.npmrc` only affects the current project.
 
 #### npm 11.x: `EALLOWSCRIPTS` error
 
