@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES2024",
-    "lib": ["ES2024"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "outDir": "./dist",
     "rootDir": "./src",
+    "outDir": "./dist",
+
+    "module": "nodenext",
+    "target": "esnext",
+
     "declaration": true,
+    "esModuleInterop": true,
+
     "strict": true
   },
   "include": ["src/**/*"]
